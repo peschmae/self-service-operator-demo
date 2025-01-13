@@ -27,14 +27,17 @@ import (
 type SelfServiceNamespaceSpec struct {
 	// Additional labels to be added to the Namespace
 	// +optional
+	// +nullable
 	AdditionalLabels map[string]string `json:"additionalLabels" protobuf:"bytes,11,rep,name=labels"`
 
 	// Additional annotations to be added to the Namespace
 	// +optional
+	// +nullable
 	AdditionalAnnotations map[string]string `json:"additionalAnnotations" protobuf:"bytes,12,rep,name=annotations"`
 
 	// EgressEndpoints to be configured as NetworkPolicies in the Namespace
 	// +optional
+	// +nullable
 	EgressConfigurations []EgressConfigurationSpec `json:"egressConfiguration"`
 
 	// Enable network checks for the Namespace
@@ -44,6 +47,7 @@ type SelfServiceNamespaceSpec struct {
 
 	// Networks checks to be configured for the check script
 	// +optional
+	// +nullable
 	NetworkChecks []NetworkCheckConfigurationSpec `json:"networkChecks"`
 }
 
@@ -58,6 +62,7 @@ type EgressConfigurationSpec struct {
 	// +kubebuilder:validation:Minimum=1
 	Port int32 `json:"port"`
 	// protocol represents the protocol (TCP, UDP, or SCTP) which traffic must match. If not specified, this field defaults to TCP.
+	// +optional
 	// +kubebuilder:default=TCP
 	// +kubebuilder:validation:Enum=TCP;UDP;SCTP
 	Protocol string `json:"protocol"`

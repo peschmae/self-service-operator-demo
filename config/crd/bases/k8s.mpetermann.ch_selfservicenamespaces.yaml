@@ -15,12 +15,12 @@ spec:
   scope: Cluster
   versions:
   - additionalPrinterColumns:
-    - jsonPath: .spec.namespaceName
-      name: NamespaceName
-      type: string
     - jsonPath: .spec.networkChecksEnabled
       name: ChecksEnabled
       type: boolean
+    - jsonPath: .status
+      name: Status
+      type: integer
     name: v1beta1
     schema:
       openAPIV3Schema:
@@ -51,11 +51,13 @@ spec:
                 additionalProperties:
                   type: string
                 description: Additional annotations to be added to the Namespace
+                nullable: true
                 type: object
               additionalLabels:
                 additionalProperties:
                   type: string
                 description: Additional labels to be added to the Namespace
+                nullable: true
                 type: object
               egressConfiguration:
                 description: EgressEndpoints to be configured as NetworkPolicies in
@@ -87,8 +89,8 @@ spec:
                   required:
                   - cidr
                   - port
-                  - protocol
                   type: object
+                nullable: true
                 type: array
               networkChecks:
                 description: Networks checks to be configured for the check script
@@ -102,6 +104,7 @@ spec:
                   required:
                   - url
                   type: object
+                nullable: true
                 type: array
               networkChecksEnabled:
                 default: false
