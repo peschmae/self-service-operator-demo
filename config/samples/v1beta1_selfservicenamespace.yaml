@@ -1,0 +1,18 @@
+apiVersion: k8s.mpetermann.ch/v1beta1
+kind: SelfServiceNamespace
+metadata:
+  labels:
+    app.kubernetes.io/name: self-service-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: selfservicenamespace-sample
+spec:
+  additionalLabels:
+    k8s.mpetermann.ch/customer: fhnw
+  egressConfiguration:
+    - cidr: 147.86.1.71/32
+      port: 443
+  networkChecksEnabled: true
+  networkChecks:
+    - url: https://fhnw.ch
+    - url: https://www.google.com
+

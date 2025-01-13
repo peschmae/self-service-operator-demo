@@ -1,0 +1,119 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.17.0
+  name: selfservicenamespaces.k8s.mpetermann.ch
+spec:
+  group: k8s.mpetermann.ch
+  names:
+    kind: SelfServiceNamespace
+    listKind: SelfServiceNamespaceList
+    plural: selfservicenamespaces
+    singular: selfservicenamespace
+  scope: Cluster
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .spec.namespaceName
+      name: NamespaceName
+      type: string
+    - jsonPath: .spec.networkChecksEnabled
+      name: ChecksEnabled
+      type: boolean
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: SelfServiceNamespace is the Schema for the selfservicenamespaces
+          API.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: SelfServiceNamespaceSpec defines the desired state of SelfServiceNamespace.
+            properties:
+              additionalAnnotations:
+                additionalProperties:
+                  type: string
+                description: Additional annotations to be added to the Namespace
+                type: object
+              additionalLabels:
+                additionalProperties:
+                  type: string
+                description: Additional labels to be added to the Namespace
+                type: object
+              egressConfiguration:
+                description: EgressEndpoints to be configured as NetworkPolicies in
+                  the Namespace
+                items:
+                  description: EgressConfigurationSpec reflects a simplified version
+                    of the NetworkPolicy EgressRule
+                  properties:
+                    cidr:
+                      description: cidr is a string representing the IPBlock Valid
+                        examples are "192.168.1.0/24" or "2001:db8::/64"
+                      minLength: 1
+                      type: string
+                    port:
+                      description: port represents the port on the given protocol
+                      format: int32
+                      minimum: 1
+                      type: integer
+                    protocol:
+                      default: TCP
+                      description: protocol represents the protocol (TCP, UDP, or
+                        SCTP) which traffic must match. If not specified, this field
+                        defaults to TCP.
+                      enum:
+                      - TCP
+                      - UDP
+                      - SCTP
+                      type: string
+                  required:
+                  - cidr
+                  - port
+                  - protocol
+                  type: object
+                type: array
+              networkChecks:
+                description: Networks checks to be configured for the check script
+                items:
+                  description: NetworkCheckConfigurationSpec defines a URL to be checked
+                    from within that namespace
+                  properties:
+                    url:
+                      minLength: 1
+                      type: string
+                  required:
+                  - url
+                  type: object
+                type: array
+              networkChecksEnabled:
+                default: false
+                description: Enable network checks for the Namespace
+                type: boolean
+            type: object
+          status:
+            description: SelfServiceNamespaceStatus defines the observed state of
+              SelfServiceNamespace.
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
